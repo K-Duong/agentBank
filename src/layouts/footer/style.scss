@@ -1,0 +1,8 @@
+@use "../../assets/styles/root/" as *;
+
+#footer {
+  @include flex-row;
+  @include center-children;
+  border-top: 2px solid #ccc;
+  padding: 2rem 0 1.5rem;
+}

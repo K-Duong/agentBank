@@ -1,0 +1,48 @@
+// @use "root";
+
+
+@mixin flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-wrap{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+//positions
+@mixin center-item{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin center-children{
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin space-beetween {
+  justify-content: space-between;
+}
+
+@mixin align-items {
+  align-items: center;
+}
+
+@mixin bottom-left{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+@mixin cover-img{
+  object-fit: cover ;
+}

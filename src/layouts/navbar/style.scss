@@ -1,0 +1,27 @@
+@use "../../assets/styles/root/" as *;
+.navbar-wrapper {
+  @include flex-row;
+  @include space-beetween;
+  @include align-items;
+  padding: $p-5 $p-20;
+
+  .logo-container .logo-agentBank {
+    width: $w-logo;
+  }
+  .links{
+    @include flex-row;
+    width: 10%;
+    @include space-beetween;
+    
+    a {
+      color: $text-color;
+      text-decoration: none;
+      font-weight: $fw-700;
+      font-size: $fs-1;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    
+  }
+}

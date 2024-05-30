@@ -1,0 +1,15 @@
+@use "../../assets/styles/root/" as *;
+.feature-item {
+  
+  @include flex-column;
+  @include center-children;
+  flex: 1;
+  padding: $p-2drem;
+  img {
+    // TODO: 
+    width: $w-feature-icon;
+    border: 10px $primary-color solid;
+    padding: $p-1rem;
+    border-radius: $border-rounded ;
+  }
+}

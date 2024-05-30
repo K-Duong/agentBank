@@ -1,0 +1,38 @@
+@use "../../assets/styles/root/" as *;
+
+.hero {
+  @include flex-row;
+  position: relative;
+  height: 400px;
+  width: 100%;
+
+  img {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .hero-content {
+    background-color: $white-color;
+    position: absolute;
+    padding: $p-35;
+    color: $text-color;
+    font-size: $fs-1;
+    text-align: left;
+    margin: 0 auto;
+    top: 50px;
+    right: 50px;
+    width: 300px;
+    
+
+    // @media (min-width: 920px) {
+    //     top: 50px;
+    //     right: 50px;
+    //     width: 300px;
+    //     margin: 2rem;
+    //     font-size: $fs-1d;
+    // }
+    
+  }
+
+}

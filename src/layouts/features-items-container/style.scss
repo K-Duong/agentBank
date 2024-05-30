@@ -1,0 +1,8 @@
+@use "../../assets/styles/root/" as *;
+
+.features-items-container {
+  // media desktop
+  @include flex-row;
+  align-items: baseline;
+
+}
