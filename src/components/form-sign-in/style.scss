@@ -1,0 +1,26 @@
+@use "../../assets/styles/root/" as *;
+
+.form-sign-in {
+  background-color: $white-color;
+  @include flex-column;
+  @include center-children;
+  box-sizing: border-box;
+
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 3rem;
+  padding: $p-2rem;
+
+  header {
+    p.error-message{
+      color: $error-color;
+    }
+  }
+
+  &-content {
+
+    div {
+      align-items: flex-start;
+    }
+  }
+}

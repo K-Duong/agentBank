@@ -1,0 +1,9 @@
+@use "../../assets/styles/root/" as *;
+
+.login-wrapper {
+  @include flex-column;
+  @include center-children;
+  background-color: $bg-color;
+  flex-grow: 1;
+  
+}

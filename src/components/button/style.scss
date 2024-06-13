@@ -1,0 +1,13 @@
+@use "../../assets/styles/root/" as *;
+
+button{
+  display: block;
+    width: 100%;
+    padding: 8px;
+    font-size: $fs-1;
+    font-weight: $fw-700;
+    margin-top: 1rem;
+    border-color: $primary-color;
+    background-color: $primary-color;
+    color: $white-color;
+}
