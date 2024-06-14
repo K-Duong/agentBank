@@ -1,0 +1,29 @@
+@use "../../assets/styles/root/" as *;
+
+.profile-wrapper{
+  @include flex-column;
+  @include center-children;
+  background-color: $bg-color;
+  row-gap: $p-35;
+  .header h1 {
+   color: $white-color;
+   text-align: center;
+
+  }
+
+  section.account{
+    background-color: $white-color;
+    @include flex-row;
+    justify-content: space-between;
+    padding: $p-25;
+    width: 80%;
+
+    .account-content-wrapper.cta{
+      @include flex-column;
+      @include center-children
+    }
+
+    
+    
+  }
+}

@@ -1,9 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
-  reducerPath: "user",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api/v1" }),
-  tagTypes: ["user"],
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3001/api/v1',
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+
+      if (token) {
+        headers.append('Authorization', `Bearer ${token}`);
+      }
+
+      return headers;
+    },
+  }),
+  tagTypes: ["api"], 
 
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -13,7 +24,14 @@ export const apiSlice = createApi({
         body: { email, password },
       }),
     }),
+
+    getUserProfile: builder.mutation({
+      query: () => ({
+        url: '/user/profile',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = apiSlice;
+export const { useLoginMutation, useGetUserProfileMutation } = apiSlice;

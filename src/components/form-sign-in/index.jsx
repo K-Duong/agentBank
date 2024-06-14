@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch} from "react-redux";
-import { useSelector } from "react-redux";
-// import { useSelectedAuth } from "../../hooks";
-
-
+import { useAuthState } from "../../hooks";
 import Button from "../button";
 import "./style.scss";
 import { useLoginMutation } from "../../utils/apiSlice";
@@ -18,8 +15,7 @@ function FormSignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  // const state = useSelectedAuth();
-  const state = useSelector(state => state.auth);
+  const authState = useAuthState();
 
   const [login] = useLoginMutation();
   const dispatch = useDispatch();
@@ -35,16 +31,22 @@ function FormSignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(logingPending(state));
+    dispatch(logingPending(authState));
 
     try {
       const response = await login({ email, password }).unwrap();
-      console.log("Response:", response);
+      // console.log("Response:", response);
       dispatch(logingSuccess(response.body.token));
       navigate("/profile")
     } catch (error) {
       dispatch(logingError(error.data));
-      setMessage("User not found!");
+      setMessage(() => {
+        if (error.data) {
+          return error.data.message.slice(6)
+        }else{
+          return "Oops, something went wrong! Please try again"
+        }
+      });
     }
     setEmail("");
     setPassword("");
@@ -55,7 +57,7 @@ function FormSignIn() {
       <header className="form-sign-in-header">
         <img alt="icon font awesome" />
         <h1 className="form-sign-in-header-title">Sign In</h1>
-        {state.error ? <p className="error-message">{message}</p> : ""}
+        {message ? <p className="error-message">{message}</p> : ""}
       </header>
       <div className="form-sign-in-content">
         <div className="user-name-container">
@@ -66,6 +68,7 @@ function FormSignIn() {
             id="sign-in-user-name"
             value={email}
             onChange={handleChangeUserName}
+            required
           />
         </div>
 
@@ -77,6 +80,7 @@ function FormSignIn() {
             id="sign-in-password"
             value={password}
             onChange={handleChangePw}
+            required
           />
         </div>
       </div>
