@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch} from "react-redux";
-import { useAuthState } from "../../hooks";
-import Button from "../button";
-import "./style.scss";
+import { useDispatchAction } from "../../hooks/useDispatchAction";
+import { useAuthState } from "../../hooks/useAuthState";
+import { useUserState } from "../../hooks/useUserState";
 import { useLoginMutation } from "../../utils/apiSlice";
+import { useSetUserState } from "../../hooks/useSetUserState";
 import {
   logingError,
   logingPending,
   logingSuccess,
 } from "../../features/authSlice";
+import Button from "../button";
+import "./style.scss";
 
 function FormSignIn() {
   const [email, setEmail] = useState("");
@@ -18,8 +20,17 @@ function FormSignIn() {
   const authState = useAuthState();
 
   const [login] = useLoginMutation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatchLogingPending = useDispatchAction(logingPending);
+  const dispatchLogingSuccess = useDispatchAction(logingSuccess);
+  const dispatchLogingError = useDispatchAction(logingError);
+  const fetchUserProfile = useSetUserState();
+
+  useEffect(() => {
+    if (authState.isAuth) {
+      fetchUserProfile();
+    }
+  }, [authState.isAuth]);
 
   const handleChangeUserName = (e) => {
     setEmail(e.target.value);
@@ -31,20 +42,22 @@ function FormSignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(logingPending(authState));
+    dispatchLogingPending(authState);
 
     try {
       const response = await login({ email, password }).unwrap();
       // console.log("Response:", response);
-      dispatch(logingSuccess(response.body.token));
-      navigate("/profile")
+      dispatchLogingSuccess(response.body.token);
+      await fetchUserProfile();
+      navigate("/profile");
     } catch (error) {
-      dispatch(logingError(error.data));
+      console.log(error);
+      dispatchLogingError(error.data);
       setMessage(() => {
         if (error.data) {
-          return error.data.message.slice(6)
-        }else{
-          return "Oops, something went wrong! Please try again"
+          return error.data.message.slice(6);
+        } else {
+          return "Oops, something went wrong! Please try again";
         }
       });
     }
@@ -55,7 +68,7 @@ function FormSignIn() {
   return (
     <form action="" className="form-sign-in">
       <header className="form-sign-in-header">
-        <img alt="icon font awesome" />
+        <i className="fa fa-user-circle sign-in-icon"></i>
         <h1 className="form-sign-in-header-title">Sign In</h1>
         {message ? <p className="error-message">{message}</p> : ""}
       </header>

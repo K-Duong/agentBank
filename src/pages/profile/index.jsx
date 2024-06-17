@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { useGetUserProfileMutation } from "../../utils/apiSlice";
-import { useAuthState } from "../../hooks";
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "../../hooks/useAuthState";
+import { useUserState } from "../../hooks/useUserState";
 import Button from "../../components/button";
 import "./style.scss";
-import { useNavigate } from "react-router-dom";
+
+
 
 function FormEditName({ handleSubmit, handleCancel, firstName, lastName }) {
   return (
@@ -15,41 +17,26 @@ function FormEditName({ handleSubmit, handleCancel, firstName, lastName }) {
     </form>
   );
 }
+
+
 function ProfilePage() {
   const [activatedForm, setActivatedForm] = useState(false);
-  const [userProfile, setUserProfile] = useState({
-    firstName: "",
-    lastName: "",
-  });
+  const [fetchUserError, setFetchUserError] = useState(false)
+  const {isLoading, isSuccessful, user} = useUserState();
+  const {isAuth} = useAuthState();
 
-  const [fetchError, setFetchError] = useState(null)
-  const authState = useAuthState();
-  const navigate = useNavigate()
-  const [getUserProfile, { isLoading, error }] = useGetUserProfileMutation();
+  const navigate = useNavigate();
+  useEffect(()=>{
+   if(!isAuth) {
+    navigate("/");
+   } else if (isAuth && !isSuccessful) {
+    setFetchUserError(true);
+   } else {
+    setFetchUserError(false)
+   }
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (authState.isAuth) {
-        try {
-        const result = await getUserProfile().unwrap();
-        setUserProfile((prev) => ({
-          ...prev,
-          firstName: result.body.firstName,
-          lastName: result.body.lastName,
-        }));
-      } catch (err) {
-        console.error("Failed to fetch user profile: ", err);
-        setFetchError("Oops, something went wrong! Please try again")
-      }}
-    };
-    fetchProfile();
-  }, [authState.isAuth, getUserProfile, navigate]);
+  }, [isAuth, isSuccessful])
 
-  // useEffect(() => {
-  //   if (!authState.isAuth) {
-  //     navigate("/");
-  //   }
-  // }, [authState.isAuth, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,8 +53,8 @@ function ProfilePage() {
     setActivatedForm(true);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  
+  if (isLoading) return <h1>Loading...</h1>;
+  if (fetchUserError) return <h1>User fetching error</h1>
 
   return (
     <div className="profile-wrapper">
@@ -75,14 +62,14 @@ function ProfilePage() {
         <h1>
           Welcome back
           <br />
-          {userProfile?.firstName} {userProfile?.lastName}!
+          {user.firstName} {user.lastName}!
         </h1>
         {activatedForm ? (
           <FormEditName
             handleSubmit={handleSubmit}
             handleCancel={handleCancel}
-            firstName={userProfile.firstName}
-            lastName={userProfile.lastName}
+            firstName={user.firstName}
+            lastName={user.lastName}
           >
             {" "}
           </FormEditName>

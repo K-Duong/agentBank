@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   isAuth: false,
+  // TODO: à voir mais pas besoin de le projet (à préparer dans la soutenance)
   isRemember: false,
   token: null,
   error: null

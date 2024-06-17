@@ -1,3 +1,4 @@
+import './style.scss'
 function MainContainer({children}){
   return (
     <div className="main-container">

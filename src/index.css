@@ -1,5 +1,12 @@
+/* TODO: convert to sass style sheet */
+/* @use "../../assets/styles/root/" as *; */
 * {
  font-family: "Avenir", "Helvetica", "Arial", sans-serif;
- margin : 100;
+ /* margin : 100; */
  padding : 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
 }
