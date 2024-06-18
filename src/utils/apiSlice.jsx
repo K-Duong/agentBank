@@ -29,7 +29,19 @@ export const apiSlice = createApi({
         method: 'POST',
       }),
     }),
+
+    updateUserProfile: builder.mutation({
+      query: (fullName) => ({
+        url: '/user/profile',
+        method: 'PUT',
+        body :{
+          firstName : fullName.firstName, 
+          lastName:fullName.lastName
+        }
+
+      })
+    })
   }),
 });
 
-export const { useLoginMutation, useGetUserProfileMutation } = apiSlice;
+export const { useLoginMutation, useGetUserProfileMutation, useUpdateUserProfileMutation } = apiSlice;

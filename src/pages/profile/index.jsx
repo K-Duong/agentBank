@@ -2,22 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "../../hooks/useAuthState";
 import { useUserState } from "../../hooks/useUserState";
+import FormEditName from "../../components/form-edit-profile";
 import Button from "../../components/button";
 import "./style.scss";
-
-
-
-function FormEditName({ handleSubmit, handleCancel, firstName, lastName }) {
-  return (
-    <form className="form-edit-name">
-      <input placeholder={firstName}></input>
-      <input placeholder={lastName}></input>
-      <Button handleClick={handleSubmit}>Save</Button>
-      <Button handleCancel={handleCancel}>Cancel</Button>
-    </form>
-  );
-}
-
 
 function ProfilePage() {
   const [activatedForm, setActivatedForm] = useState(false);
@@ -26,6 +13,7 @@ function ProfilePage() {
   const {isAuth} = useAuthState();
 
   const navigate = useNavigate();
+
   useEffect(()=>{
    if(!isAuth) {
     navigate("/");
@@ -38,18 +26,7 @@ function ProfilePage() {
   }, [isAuth, isSuccessful])
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("save change");
-    setActivatedForm(false);
-  };
-
-  const handleCancel = () => {
-    setActivatedForm(false);
-  };
-
-  const handleChangeName = () => {
-    console.log("name to change");
+  const handleOpenForm = () => {
     setActivatedForm(true);
   };
 
@@ -66,15 +43,14 @@ function ProfilePage() {
         </h1>
         {activatedForm ? (
           <FormEditName
-            handleSubmit={handleSubmit}
-            handleCancel={handleCancel}
             firstName={user.firstName}
             lastName={user.lastName}
+            formState={setActivatedForm}
           >
             {" "}
           </FormEditName>
         ) : (
-          <Button className="edit-button" handleClick={handleChangeName}>
+          <Button className="edit-button" handleClick={handleOpenForm}>
             Edit Name
           </Button>
         )}

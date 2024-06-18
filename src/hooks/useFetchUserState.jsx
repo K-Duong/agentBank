@@ -1,18 +1,16 @@
-import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useGetUserProfileMutation } from "../utils/apiSlice";
-import { loadingUser, successUser, errorUser, resetUser } from "../features/userSlice";
+import { loadingUser, successUser, errorUser } from "../features/userSlice";
 import { useAuthState } from "./useAuthState";
 import { useUserState } from "./useUserState";
 
-export const useSetUserState = () => {
+export const useFetchUserState = () => {
   const dispatch = useDispatch()
   const [getUserProfile] = useGetUserProfileMutation();
   const { isAuth } = useAuthState();
   const userState = useUserState();
 
   const fetchApi = async () => { 
-    console.log("set user state");
     if (isAuth) {
       dispatch(loadingUser(userState));
       try {
@@ -21,10 +19,7 @@ export const useSetUserState = () => {
       } catch (err) {
         dispatch(errorUser(err));
       }
-    } else {
-      // TODO: really need this line ?
-      dispatch(resetUser(userState));
-    }
+    } 
   };
  
   

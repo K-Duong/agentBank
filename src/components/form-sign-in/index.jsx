@@ -4,7 +4,7 @@ import { useDispatchAction } from "../../hooks/useDispatchAction";
 import { useAuthState } from "../../hooks/useAuthState";
 import { useUserState } from "../../hooks/useUserState";
 import { useLoginMutation } from "../../utils/apiSlice";
-import { useSetUserState } from "../../hooks/useSetUserState";
+import { useFetchUserState } from "../../hooks/useFetchUserState";
 import {
   logingError,
   logingPending,
@@ -24,7 +24,7 @@ function FormSignIn() {
   const dispatchLogingPending = useDispatchAction(logingPending);
   const dispatchLogingSuccess = useDispatchAction(logingSuccess);
   const dispatchLogingError = useDispatchAction(logingError);
-  const fetchUserProfile = useSetUserState();
+  const fetchUserProfile = useFetchUserState();
 
   useEffect(() => {
     if (authState.isAuth) {
@@ -103,7 +103,7 @@ function FormSignIn() {
         <label name="remember-me">Remember me</label>
       </div>
 
-      <Button handleClick={handleSubmit}>Sign In</Button>
+      <Button type="submit" handleClick={handleSubmit}>Sign In</Button>
     </form>
   );
 }

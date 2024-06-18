@@ -1,9 +1,8 @@
 import "./style.scss";
 
-function Button({children, className, handleClick=null, icon=null}) {
+function Button({children, className, type="button", handleClick=null, icon=null}) {
   return (
-  
-    <button className={className} onClick={handleClick}>
+    <button className={className} type={type} onClick={handleClick}>
       {children}
     </button>
  
