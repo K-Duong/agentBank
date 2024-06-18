@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useGetUserProfileMutation } from "../utils/apiSlice";
-import { loadingUser, successUser, errorUser } from "../features/userSlice";
+import { loadUser, userLoadedSuccessfully, userLoadingFailed } from "../features/userSlice";
 import { useAuthState } from "./useAuthState";
 import { useUserState } from "./useUserState";
 
@@ -12,12 +12,13 @@ export const useFetchUserState = () => {
 
   const fetchApi = async () => { 
     if (isAuth) {
-      dispatch(loadingUser(userState));
+      dispatch(loadUser(userState));
       try {
         const res = await getUserProfile().unwrap();
-        dispatch(successUser(res.body));
+        dispatch(userLoadedSuccessfully(res.body));
       } catch (err) {
-        dispatch(errorUser(err));
+        console.log(err);
+        dispatch(userLoadingFailed(err));
       }
     } 
   };

@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   error: null,
-  isSuccessful: false,
+  // isSuccessful: false,
+  id:"",
   user: {
     firstName:"",
     lastName:""
@@ -13,25 +14,22 @@ export const userSlice = createSlice({
   name: "userInfos",
   initialState,
   reducers : {
-    // TODO: re-name action type = loadUser, userLoadedSuccessfully, userLoadingFailed, resetUserState
-    loadingUser : (state) => {
+    loadUser : (state) => {
       state.isLoading = true;
     },
-    successUser : (state, action) => {
+    userLoadedSuccessfully : (state, action) => {
       state.isLoading = false;
-      state.isSuccessful = true;
+      state.id = action.payload.id;
       state.user = {
         firstName: action.payload.firstName,
         lastName: action.payload.lastName
       }
     }, 
-    errorUser: (state, action) => {
+    userLoadingFailed: (state, action) => {
       state.error = action.payload.error
     }, 
-    resetUser: (state) => {
-      return initialState
-    }
+    resetUserState: () => initialState
   }
 });
 
-export const {loadingUser, successUser, errorUser, resetUser} = userSlice.actions
+export const {loadUser, userLoadedSuccessfully, userLoadingFailed, resetUserState} = userSlice.actions

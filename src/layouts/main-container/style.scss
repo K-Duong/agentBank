@@ -2,4 +2,5 @@
 
 .main-container {
   flex-grow: 1;
+  @include flex-column;
 }

@@ -5,6 +5,7 @@ import { useUpdateUserProfileMutation } from "../../utils/apiSlice";
 
 import Button from "../../components/button";
 import "./style.scss";
+
 export default function FormEditName({ firstName, lastName, formState }) {
   const [fullName, setFullName] = useState({ firstName, lastName });
   const [updateUserProfile] = useUpdateUserProfileMutation();
@@ -53,10 +54,10 @@ export default function FormEditName({ firstName, lastName, formState }) {
         value={fullName.lastName}
         onChange={handleUpdateLastName}
       ></input>
-          <Button type="submit" handleClick={handleSubmit}>Save</Button>
+      <Button type="submit" handleClick={handleSubmit}>
+        Save
+      </Button>
       <Button handleClick={handleCancel}>Cancel</Button>
-
-      
     </form>
   );
 }

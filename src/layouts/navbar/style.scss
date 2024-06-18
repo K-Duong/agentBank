@@ -10,14 +10,21 @@
   }
   .links{
     @include flex-row;
-    width: 10%;
-    @include space-beetween;
+    // width: auto;
+    // @include space-beetween;
+    column-gap: $g-15;
     
     a {
+      @include flex-row;
+      column-gap: $g-5 ;
       color: $text-color;
       text-decoration: none;
       font-weight: $fw-700;
       font-size: $fs-1;
+
+      div{
+        @include flex-row;
+      }
     }
     a:hover {
       text-decoration: underline;

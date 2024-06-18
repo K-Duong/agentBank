@@ -7,9 +7,10 @@ import Button from "../../components/button";
 import "./style.scss";
 
 function ProfilePage() {
+  //TODO: handle error if id from params # id ?
   const [activatedForm, setActivatedForm] = useState(false);
   const [fetchUserError, setFetchUserError] = useState(false)
-  const {isLoading, isSuccessful, user} = useUserState();
+  const {isLoading, id, user} = useUserState();
   const {isAuth} = useAuthState();
 
   const navigate = useNavigate();
@@ -17,13 +18,13 @@ function ProfilePage() {
   useEffect(()=>{
    if(!isAuth) {
     navigate("/");
-   } else if (isAuth && !isSuccessful) {
+   } else if (isAuth && id.length === 0) {
     setFetchUserError(true);
    } else {
     setFetchUserError(false)
    }
 
-  }, [isAuth, isSuccessful])
+  }, [isAuth, id])
 
 
   const handleOpenForm = () => {

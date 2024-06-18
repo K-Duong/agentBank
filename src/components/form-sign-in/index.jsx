@@ -1,15 +1,19 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { useDispatchAction } from "../../hooks/useDispatchAction";
 import { useAuthState } from "../../hooks/useAuthState";
 import { useUserState } from "../../hooks/useUserState";
-import { useLoginMutation } from "../../utils/apiSlice";
 import { useFetchUserState } from "../../hooks/useFetchUserState";
+import { useLoginMutation } from "../../utils/apiSlice";
+
 import {
   logingError,
   logingPending,
   logingSuccess,
 } from "../../features/authSlice";
+
 import Button from "../button";
 import "./style.scss";
 
@@ -17,22 +21,32 @@ function FormSignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
   const authState = useAuthState();
+  const { id } = useUserState();
 
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+
+  // dispatch actions
   const dispatchLogingPending = useDispatchAction(logingPending);
   const dispatchLogingSuccess = useDispatchAction(logingSuccess);
   const dispatchLogingError = useDispatchAction(logingError);
   const fetchUserProfile = useFetchUserState();
 
   useEffect(() => {
-    if (authState.isAuth) {
-      fetchUserProfile();
-    }
-  }, [authState.isAuth]);
+    const fetchProfileAndNavigate = async () => {
+      if (authState.isAuth) {
+        await fetchUserProfile();
+        if (id) {
+          navigate(`/user/:${id}/profile`);
+        }
+      }
+    };
+    fetchProfileAndNavigate();
+  }, [authState.isAuth, id]);
 
-  const handleChangeUserName = (e) => {
+  const handleChangeEmail = (e) => {
     setEmail(e.target.value);
   };
 
@@ -43,13 +57,11 @@ function FormSignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatchLogingPending(authState);
-
     try {
       const response = await login({ email, password }).unwrap();
       // console.log("Response:", response);
       dispatchLogingSuccess(response.body.token);
       await fetchUserProfile();
-      navigate("/profile");
     } catch (error) {
       console.log(error);
       dispatchLogingError(error.data);
@@ -68,7 +80,7 @@ function FormSignIn() {
   return (
     <form action="" className="form-sign-in">
       <header className="form-sign-in-header">
-        <i className="fa fa-user-circle sign-in-icon"></i>
+      <FontAwesomeIcon icon="fa-solid fa-circle-user" />
         <h1 className="form-sign-in-header-title">Sign In</h1>
         {message ? <p className="error-message">{message}</p> : ""}
       </header>
@@ -80,7 +92,7 @@ function FormSignIn() {
             name="user-name"
             id="sign-in-user-name"
             value={email}
-            onChange={handleChangeUserName}
+            onChange={handleChangeEmail}
             required
           />
         </div>
@@ -103,7 +115,9 @@ function FormSignIn() {
         <label name="remember-me">Remember me</label>
       </div>
 
-      <Button type="submit" handleClick={handleSubmit}>Sign In</Button>
+      <Button type="submit" handleClick={handleSubmit}>
+        Sign In
+      </Button>
     </form>
   );
 }
