@@ -40,7 +40,7 @@ function ProfilePage() {
         <h1>
           Welcome back
           <br />
-          {user.firstName} {user.lastName}!
+          {!activatedForm && `${user.firstName} ${user.lastName}!`}
         </h1>
         {activatedForm ? (
           <FormEditName
@@ -51,7 +51,7 @@ function ProfilePage() {
             {" "}
           </FormEditName>
         ) : (
-          <Button className="edit-button" handleClick={handleOpenForm}>
+          <Button className="btn-edit" handleClick={handleOpenForm}>
             Edit Name
           </Button>
         )}

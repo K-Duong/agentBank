@@ -1,15 +1,23 @@
 @use "../../assets/styles/root/" as *;
 .feature-item {
-  
   @include flex-column;
   @include center-children;
-  flex: 1;
+  // flex: 1;
   padding: $p-2drem;
+  row-gap: $g-15;
   img {
-    // TODO: 
     width: $w-feature-icon;
-    border: 10px $primary-color solid;
+    border: $b-10 $primary-color solid;
     padding: $p-1rem;
-    border-radius: $border-rounded ;
+    border-radius: $border-rounded;
+  }
+  .feature-item-title {
+    color: $title-color;
+    margin: 0.5rem;
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
   }
 }

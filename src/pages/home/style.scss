@@ -1,0 +1,6 @@
+@use "../../assets/styles/root/" as *;
+
+.home-wrapper {
+  @include flex-column;
+  row-gap: $g-2drem;
+}

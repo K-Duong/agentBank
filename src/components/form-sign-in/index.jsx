@@ -115,7 +115,7 @@ function FormSignIn() {
         <label name="remember-me">Remember me</label>
       </div>
 
-      <Button type="submit" handleClick={handleSubmit}>
+      <Button className="btn-sign-in" type="submit" handleClick={handleSubmit}>
         Sign In
       </Button>
     </form>

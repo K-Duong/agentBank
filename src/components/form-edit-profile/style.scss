@@ -1,0 +1,33 @@
+@use "../../assets/styles/root/" as *;
+
+.form-edit-name{
+  @include flex-column;
+
+  .inputs-edit-name{
+    @include flex-column;
+    row-gap: 15px;
+
+    @media (min-width: 720px) {
+      @include flex-row;
+    column-gap: 15px;
+    }
+
+    input {
+      padding: 8px;
+      color: gray;
+    }
+  }
+
+  .btns-form {
+    @include flex-row;
+    justify-content: center;
+    column-gap: 15px;
+
+    button{
+      width: 30%;
+    }
+  }
+
+
+
+}

@@ -44,20 +44,24 @@ export default function FormEditName({ firstName, lastName, formState }) {
   };
   return (
     <form className="form-edit-name">
-      <input
-        placeholder={fullName.firstName}
-        value={fullName.firstName}
-        onChange={handleUpdateFirstName}
-      ></input>
-      <input
-        placeholder={fullName.lastName}
-        value={fullName.lastName}
-        onChange={handleUpdateLastName}
-      ></input>
-      <Button type="submit" handleClick={handleSubmit}>
-        Save
-      </Button>
-      <Button handleClick={handleCancel}>Cancel</Button>
+      <div className="inputs-edit-name">
+        <input
+          placeholder={fullName.firstName}
+          value={fullName.firstName}
+          onChange={handleUpdateFirstName}
+        ></input>
+        <input
+          placeholder={fullName.lastName}
+          value={fullName.lastName}
+          onChange={handleUpdateLastName}
+        ></input>
+      </div>
+      <div className="btns-form">
+        <Button type="submit" handleClick={handleSubmit}>
+          Save
+        </Button>
+        <Button handleClick={handleCancel}>Cancel</Button>
+      </div>
     </form>
   );
 }

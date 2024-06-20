@@ -1,5 +1,6 @@
 import FeaturesItemsContainer from "../../layouts/features-items-container"
-import Hero from "../../layouts/hero"
+import Hero from "../../layouts/hero";
+import './style.scss'
 
 function HomePage () {
   return (

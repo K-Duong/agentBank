@@ -2,37 +2,61 @@
 
 .hero {
   @include flex-row;
+  @include center-children;
   position: relative;
-  height: 400px;
+  height: 250px;
   width: 100%;
 
-  img {
+  @media (min-width: 920px) {
     height: 400px;
+  }
+
+  img {
+    height: 250px;
     width: 100%;
     object-fit: cover;
+    @media (min-width: 920px) {
+      height: 400px;
+    }
   }
 
   .hero-content {
+    @include flex-column;
     background-color: $white-color;
     position: absolute;
-    padding: $p-35;
-    color: $text-color;
-    font-size: $fs-1;
+    top: 2rem;
+    width: 200px;
+    padding: 2rem;
     text-align: left;
     margin: 0 auto;
-    top: 50px;
-    right: 50px;
-    width: 300px;
-    
+    @media ((min-width: 920px)) {
+      position: absolute;
+        top: 50px;
+        right: 50px;
+        width: 300px;
+        margin: 2rem;
+    }
+    p.subtitle {
+      font-weight: $fw-700;
+      font-size: 1rem;
+      margin: 0;  
+      
+      @media ((min-width: 920px)) {
+      font-size: 1.5rem;
+    }
+  
+      
+    }
+    p.text {
+      margin-bottom: 0;
+      font-size: 0.9rem;
+      margin-top: 15px;
 
-    // @media (min-width: 920px) {
-    //     top: 50px;
-    //     right: 50px;
-    //     width: 300px;
-    //     margin: 2rem;
-    //     font-size: $fs-1d;
-    // }
-    
+      @media ((min-width: 920px)) {
+        font-size: 1.2rem;
+        
+      }
+      }
   }
 
 }

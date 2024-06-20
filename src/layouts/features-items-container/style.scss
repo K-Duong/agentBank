@@ -1,8 +1,14 @@
 @use "../../assets/styles/root/" as *;
 
-.features-items-container {
+.features {
+  @include flex-column;
+  margin-bottom: $m-15;
+  
   // media desktop
-  @include flex-row;
+  @media (min-width: 920px) {
+    @include flex-row;
   align-items: baseline;
+  }
+  
 
 }

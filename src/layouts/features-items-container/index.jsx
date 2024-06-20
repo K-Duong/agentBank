@@ -18,13 +18,13 @@ function FeaturesItemsContainer () {
     {
       src: iconMoney,
       alt: "Money Icon",
-      title:"Security you can trust",
+      title:"More savings means higher rates",
       description:"The more you save with us, the higher your interest rate will be!"
     },
     {
       src: iconSecurity,
       alt: "Security Icon",
-      title:"More savings means higher rates",
+      title:"Security you can trust",
       description:"We use top of the line encryption to make sure your data and money is always safe."
     },
 
@@ -32,7 +32,7 @@ function FeaturesItemsContainer () {
 
   ]
   return (
-    <section className="features-items-container">
+    <section className="features">
       {features.map(({src, alt, title, description }) => {
         return <FeatureItem key={alt} src={src} alt={alt} title={title} description={description}/>
         })}

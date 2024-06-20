@@ -7,8 +7,8 @@
 
   width: 300px;
   margin: 0 auto;
-  margin-top: 3rem;
-  padding: $p-2rem;
+    margin-top: $m-3rem;
+    padding: $p-2rem;
 
   header {
     @include flex-column-center;
@@ -16,16 +16,40 @@
       color: $error-color;
       text-align: center
     }
+    h1 {
+      font-size: 1.5em;
+    }
+    .fa-circle-user {
+      font-size: 18px;
+    }
   }
 
   &-content {
     @include flex-column-center;
+    width: 100%;
+    row-gap: $g-1rem;
     div {
       @include flex-column;
       align-items: flex-start;
+      width: 100%;
+      label {
+        font-weight: $fw-700;
+      }
       input {
         width: 100%;
+        padding: $p-5;
+        font-size: 1.2rem;
       }
     }
+  }
+
+  .remember-me {
+    margin-top: $g-1rem;
+    align-self: start;
+  }
+
+  .btn-sign-in {
+    text-decoration: underline;
+    border: none;
   }
 }
