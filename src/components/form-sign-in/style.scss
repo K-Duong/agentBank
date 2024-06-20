@@ -14,10 +14,12 @@
     @include flex-column-center;
     p.error-message{
       color: $error-color;
-      text-align: center
+      text-align: center;
+      margin-bottom: 15px;
     }
     h1 {
       font-size: 1.5em;
+      margin: 1rem
     }
     .fa-circle-user {
       font-size: 18px;
@@ -28,6 +30,17 @@
     @include flex-column-center;
     width: 100%;
     row-gap: $g-1rem;
+
+    p.error-message {
+      margin-top: 5px;
+      margin-left: 5px;
+      color: $error-color;
+      font-size: 14px;
+    }
+
+    input.error {
+      border-color: red;
+    }
     div {
       @include flex-column;
       align-items: flex-start;
@@ -41,6 +54,21 @@
         font-size: 1.2rem;
       }
     }
+    .password-container{
+      .input-pw-container{
+        position: relative;
+
+        .fa-eye,
+       .fa-eye-slash{
+        position: absolute;
+        right: 0;
+        padding: 10px;
+        cursor: pointer;
+        }
+      }
+    
+      
+    }
   }
 
   .remember-me {
@@ -53,3 +81,4 @@
     border: none;
   }
 }
+

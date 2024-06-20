@@ -16,10 +16,10 @@ export const apiSlice = createApi({
 
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: ({ email, password }) => ({
+      query: (payload) => ({
         url: "/user/login",
         method: "POST",
-        body: { email, password },
+        body: { email: payload.email, password: payload.password },
       }),
     }),
 

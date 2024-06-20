@@ -5,11 +5,11 @@
 
   .inputs-edit-name{
     @include flex-column;
-    row-gap: 15px;
+    row-gap: $g-15;
 
     @media (min-width: 720px) {
       @include flex-row;
-    column-gap: 15px;
+    column-gap: $g-15;
     }
 
     input {
@@ -21,7 +21,7 @@
   .btns-form {
     @include flex-row;
     justify-content: center;
-    column-gap: 15px;
+    column-gap: $g-15;
 
     button{
       width: 30%;
