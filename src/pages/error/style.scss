@@ -1,0 +1,17 @@
+@use "../../assets/styles/root/" as *;
+
+.error-wrapper {
+  @include flex-column;
+  @include center-children;
+  flex-grow: 1;
+
+  .error-status {
+    color: $error-color;
+    font-size: 36px;
+    font-weight: $fw-700;
+  }
+  .error-message {
+    font-size: 16px;
+  }
+
+}

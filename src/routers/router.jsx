@@ -14,7 +14,6 @@ export const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage/>,
-    // TODO: ajouter loader 
     children : [
       {
         path:"",
@@ -25,23 +24,13 @@ export const router = createBrowserRouter([
         element: <LoginPage/>
       },
       {
-        path:"user",
-        children: [
-          {
-            path:":id/profile",
-            element: <ProfilePage/>
-          },
-          {
-            path:":id/transactions",
-            element: <TransactionPage/>
-
-          }
-        ]
+        path:"profile",
+        element: <ProfilePage/>
       },
-      // {
-      //   path:"profile",
-      //   element: <ProfilePage/>
-      // }
+      {
+        path:"transactions",
+        element: <TransactionPage/>
+      }
     ]
   },
 ]);

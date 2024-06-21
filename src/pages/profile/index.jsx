@@ -9,30 +9,25 @@ import "./style.scss";
 function ProfilePage() {
   //TODO: handle error if id from params # id ?
   const [activatedForm, setActivatedForm] = useState(false);
-  const [fetchUserError, setFetchUserError] = useState(false)
-  const {isLoading, id, user} = useUserState();
+  // const [fetchUserError, setFetchUserError] = useState(false)
+  const {isLoading, user} = useUserState();
   const {isAuth} = useAuthState();
 
   const navigate = useNavigate();
 
   useEffect(()=>{
-   if(!isAuth) {
-    navigate("/");
-   } else if (isAuth && id.length === 0) {
-    setFetchUserError(true);
-   } else {
-    setFetchUserError(false)
-   }
+    if (!isAuth) navigate("/")
+  }, [isAuth]);
 
-  }, [isAuth, id])
-
+  const handleNavigateToTransactionPage = () => {
+    navigate("/transactions")
+  }
 
   const handleOpenForm = () => {
     setActivatedForm(true);
   };
 
   if (isLoading) return <h1>Loading...</h1>;
-  if (fetchUserError) return <h1>User fetching error</h1>
 
   return (
     <div className="profile-wrapper">
@@ -65,7 +60,7 @@ function ProfilePage() {
           <p className="account-amount-description">Available Balance</p>
         </div>
         <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
+          <button onClick={handleNavigateToTransactionPage} className="transaction-button">View transactions</button>
         </div>
       </section>
       <section className="account">
@@ -75,7 +70,7 @@ function ProfilePage() {
           <p className="account-amount-description">Available Balance</p>
         </div>
         <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
+          <button onClick={handleNavigateToTransactionPage} className="transaction-button">View transactions</button>
         </div>
       </section>
       <section className="account">
@@ -85,7 +80,7 @@ function ProfilePage() {
           <p className="account-amount-description">Current Balance</p>
         </div>
         <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
+          <button onClick={handleNavigateToTransactionPage} className="transaction-button">View transactions</button>
         </div>
       </section>
     </div>

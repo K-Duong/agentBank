@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useDispatchAction } from "../../hooks/useDispatchAction";
 import { useAuthState } from "../../hooks/useAuthState";
-import { useUserState } from "../../hooks/useUserState";
 import { useFetchUserState } from "../../hooks/useFetchUserState";
 import { useLoginMutation } from "../../utils/apiSlice";
 
@@ -18,16 +17,10 @@ import Button from "../button";
 import "./style.scss";
 
 function FormSignIn() {
-  // TODO: show entire hidden pw
-  // const [hiddenPw, setHiddenPw] = useState("");
   const [message, setMessage] = useState("");
-
   const [password, setPassword] = useState({
     value: "",
     isHidden: true,
-    hiddenValue: "",
-    isValidate: true,
-    errorMessage: "",
   });
   const [email, setEmail] = useState({
     value: "",
@@ -36,7 +29,6 @@ function FormSignIn() {
   });
 
   const authState = useAuthState();
-  const { id } = useUserState();
 
   const [login] = useLoginMutation();
   const navigate = useNavigate();
@@ -51,13 +43,11 @@ function FormSignIn() {
     const fetchProfileAndNavigate = async () => {
       if (authState.isAuth) {
         await fetchUserProfile();
-        if (id) {
-          navigate(`/user/:${id}/profile`);
-        }
+        navigate("/profile")
       }
     };
     fetchProfileAndNavigate();
-  }, [authState.isAuth, id]);
+  }, [authState.isAuth]);
 
   const handleChangeEmail = (e) => {
     const value = e.target.value.trim().toLowerCase();
@@ -78,15 +68,12 @@ function FormSignIn() {
 
   const handleChangePw = (e) => {
     const value = e.target.value;
-    const passwordRegex = new RegExp(/^((?! )[\w&@#]+)$/);
+    //TODO: enlever la validation
+    // const passwordRegex = new RegExp(/^((?! )[\w&@#]+)$/);
     setPassword((prev) => {
       return {
         ...prev,
         value: value,
-        isValidate: passwordRegex.test(value),
-        errorMessage: passwordRegex.test(value)
-          ? ""
-          : "Please enter your correct password!",
       };
     });
   };
@@ -102,7 +89,7 @@ function FormSignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email.errorMessage.length > 0 || password.errorMessage.length > 0) {
+    if (email.errorMessage.length > 0) {
       return;
     } else {
       dispatchLogingPending(authState);
@@ -126,22 +113,13 @@ function FormSignIn() {
             ...prev,
             value: "",
             isHidden: true,
-            isValidate: true,
-            errorMessage: "",
           };
         });
       } catch (error) {
         console.log(error);
         dispatchLogingError(error.data);
-        setMessage(() => {
-          if (error.data) {
-            return error.data.message.slice(6);
-          } else {
-            return "Oops, something went wrong! Please try again";
-          }
-        });
+        setMessage("Invalid user. Please try again!");
       }
-      
     }
   };
 
@@ -182,7 +160,6 @@ function FormSignIn() {
               onClick={handleToggleShowPassword}
             />
             <input
-              className={password.isValidate ? "input-pw" : "error"}
               type={password.isHidden ? "password" : "text"}
               name="password"
               id="sign-in-password"
@@ -191,11 +168,6 @@ function FormSignIn() {
               autoComplete="on"
               required
             />
-            {password.isValidate ? (
-              ""
-            ) : (
-              <p className="error-message">{password.errorMessage}</p>
-            )}
           </div>
         </div>
       </div>

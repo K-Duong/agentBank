@@ -3,6 +3,11 @@
 .form-edit-name{
   @include flex-column;
 
+  p.error-message {
+    color:lighten($error-color, 15%);
+    align-self: center;
+    margin-bottom: 15px;
+  }
   .inputs-edit-name{
     @include flex-column;
     row-gap: $g-15;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { useFetchUserState } from "../../hooks/useFetchUserState";
+import { userLoadedSuccessfully } from "../../features/userSlice";
+import { useDispatchAction } from "../../hooks/useDispatchAction";
 import { useUpdateUserProfileMutation } from "../../utils/apiSlice";
 
 import Button from "../../components/button";
@@ -8,8 +9,11 @@ import "./style.scss";
 
 export default function FormEditName({ firstName, lastName, formState }) {
   const [fullName, setFullName] = useState({ firstName, lastName });
+  const [errorMessage, setErrorMessage] = useState("");
   const [updateUserProfile] = useUpdateUserProfileMutation();
-  const fetchUserState = useFetchUserState();
+  const dispatchUserLoadedSucessfully = useDispatchAction(
+    userLoadedSuccessfully
+  );
 
   const handleUpdateFirstName = (e) => {
     setFullName((prev) => {
@@ -30,20 +34,29 @@ export default function FormEditName({ firstName, lastName, formState }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateUserProfile(fullName).unwrap();
-      await fetchUserState();
+      const res = await updateUserProfile(fullName).unwrap();
+      if (res.status === 200) {
+        dispatchUserLoadedSucessfully(fullName);
+      }
+      formState(false);
     } catch (err) {
       console.log("error submit form update profile:", err);
-    } finally {
-      formState(false);
+      setErrorMessage("Something went wrong 🙄");
+      formState(true);
     }
   };
 
   const handleCancel = () => {
     formState(false);
   };
+
   return (
     <form className="form-edit-name">
+      {errorMessage.length > 0 ? (
+        <p className="error-message">{errorMessage}</p>
+      ) : (
+        ""
+      )}
       <div className="inputs-edit-name">
         <input
           placeholder={fullName.firstName}
@@ -65,63 +78,3 @@ export default function FormEditName({ firstName, lastName, formState }) {
     </form>
   );
 }
-
-// import React,  { useState, useCallback } from "react";
-// import { useUpdateUserProfileMutation } from "../../utils/apiSlice";
-// import { useFetchUserState } from "../../hooks/useFetchUserState";
-// import Button from "../../components/button";
-// import "./style.scss";
-
-// function FormEditName({ firstName, lastName, formState }) {
-//   const [fullName, setFullName] = useState({ firstName, lastName });
-//   const [updateUserProfile] = useUpdateUserProfileMutation();
-//   const fetchUserState = useFetchUserState();
-
-//   const handleUpdateFirstName = useCallback((e) => {
-//     setFullName((prev) => ({
-//       ...prev,
-//       firstName: e.target.value,
-//     }));
-//   }, []);
-
-//   const handleUpdateLastName = useCallback((e) => {
-//     setFullName((prev) => ({
-//       ...prev,
-//       lastName: e.target.value,
-//     }));
-//   }, []);
-
-//   const handleSubmit = useCallback(async (e) => {
-//     e.preventDefault();
-//     try {
-//       await updateUserProfile(fullName).unwrap();
-//       await fetchUserState();
-//       formState(false);
-//     } catch (err) {
-//       console.error("Error submitting form update profile:", err);
-//     }
-//   }, [fullName, updateUserProfile, fetchUserState, formState]);
-
-//   const handleCancel = useCallback(() => {
-//     formState(false);
-//   }, [formState]);
-
-//   return (
-//     <form className="form-edit-name" onSubmit={handleSubmit}>
-//       <input
-//         placeholder="First Name"
-//         value={fullName.firstName}
-//         onChange={handleUpdateFirstName}
-//       />
-//       <input
-//         placeholder="Last Name"
-//         value={fullName.lastName}
-//         onChange={handleUpdateLastName}
-//       />
-//       <Button type="submit">Save</Button>
-//       <Button type="button" onClick={handleCancel}>Cancel</Button>
-//     </form>
-//   );
-// }
-
-// export default React.memo(FormEditName);
