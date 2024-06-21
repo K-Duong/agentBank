@@ -60,7 +60,7 @@ function FormSignIn() {
   }, [authState.isAuth, id]);
 
   const handleChangeEmail = (e) => {
-    const value =  (e.target.value.trim()).toLowerCase();
+    const value = e.target.value.trim().toLowerCase();
     const emailRegex = new RegExp(
       /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/
     );
@@ -95,46 +95,54 @@ function FormSignIn() {
     setPassword((prev) => {
       return {
         ...prev,
-        isHidden : !prev.isHidden
-      }
-    })
+        isHidden: !prev.isHidden,
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatchLogingPending(authState);
-    try {
-      const response = await login({ email: email.value, password: password.value }).unwrap();
-      dispatchLogingSuccess(response.body.token);
-      await fetchUserProfile();
-    } catch (error) {
-      console.log(error);
-      dispatchLogingError(error.data);
-      setMessage(() => {
-        if (error.data) {
-          return error.data.message.slice(6);
-        } else {
-          return "Oops, something went wrong! Please try again";
-        }
-      });
+    if (email.errorMessage.length > 0 || password.errorMessage.length > 0) {
+      return;
+    } else {
+      dispatchLogingPending(authState);
+      try {
+        const response = await login({
+          email: email.value,
+          password: password.value,
+        }).unwrap();
+        dispatchLogingSuccess(response.body.token);
+        await fetchUserProfile();
+        setEmail((prev) => {
+          return {
+            ...prev,
+            value: "",
+            isValidate: true,
+            errorMessage: "",
+          };
+        });
+        setPassword((prev) => {
+          return {
+            ...prev,
+            value: "",
+            isHidden: true,
+            isValidate: true,
+            errorMessage: "",
+          };
+        });
+      } catch (error) {
+        console.log(error);
+        dispatchLogingError(error.data);
+        setMessage(() => {
+          if (error.data) {
+            return error.data.message.slice(6);
+          } else {
+            return "Oops, something went wrong! Please try again";
+          }
+        });
+      }
+      
     }
-    setEmail((prev) => {
-      return {
-        ...prev,
-        value: "",
-        isValidate: true,
-        errorMessage: "",
-      };
-    });
-    setPassword((prev) => {
-      return {
-        ...prev,
-        value: "",
-        isHidden: true,
-        isValidate: true,
-        errorMessage: "",
-      };
-    });
   };
 
   return (
@@ -148,12 +156,13 @@ function FormSignIn() {
         <div className="user-name-container">
           <label name="user-name">Username</label>
           <input
-            className={email.isValidate ? "input-email": "error"}
+            className={email.isValidate ? "input-email" : "error"}
             type="text"
             name="user-name"
             id="sign-in-user-name"
             value={email.value}
             onChange={handleChangeEmail}
+            autoComplete="on"
             required
           />
           {email.isValidate ? (
@@ -167,17 +176,19 @@ function FormSignIn() {
           <label name="password">Password</label>
           <div className="input-pw-container">
             <FontAwesomeIcon
-              icon={password.isHidden ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"}
+              icon={
+                password.isHidden ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"
+              }
               onClick={handleToggleShowPassword}
             />
             <input
-            className={password.isValidate ? "input-pw" : "error" }
+              className={password.isValidate ? "input-pw" : "error"}
               type={password.isHidden ? "password" : "text"}
               name="password"
               id="sign-in-password"
               value={password.value}
               onChange={handleChangePw}
-              autocomplete="on"
+              autoComplete="on"
               required
             />
             {password.isValidate ? (
