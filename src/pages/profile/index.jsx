@@ -5,11 +5,25 @@ import { useUserState } from "../../hooks/useUserState";
 import FormEditName from "../../components/form-edit-profile";
 import Button from "../../components/button";
 import "./style.scss";
+import Account from "../../components/account";
 
 function ProfilePage() {
-  //TODO: handle error if id from params # id ?
+  // mocked accounts to render
+  const listOfAccounts = [
+    {
+      title: "Argent Bank Checking (x8349)",
+      availableBalance: 2082.79
+    },
+    {
+      title: "Argent Bank Savings (x6712)",
+      availableBalance: 10928.42
+    },
+    {
+      title: "Argent Bank Credit Card (x8349)",
+      availableBalance: 184.30
+    }
+  ]
   const [activatedForm, setActivatedForm] = useState(false);
-  // const [fetchUserError, setFetchUserError] = useState(false)
   const {isLoading, user} = useUserState();
   const {isAuth} = useAuthState();
 
@@ -46,43 +60,12 @@ function ProfilePage() {
             {" "}
           </FormEditName>
         ) : (
-          <Button className="btn-edit" handleClick={handleOpenForm}>
+          <Button className="btn-edit-name" handleClick={handleOpenForm}>
             Edit Name
           </Button>
         )}
       </div>
-      {/* <h2 class="sr-only">Accounts</h2> */}
-      {/* TODO: to map accounts array */}
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Checking (x8349)</h3>
-          <p className="account-amount">$2,082.79</p>
-          <p className="account-amount-description">Available Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button onClick={handleNavigateToTransactionPage} className="transaction-button">View transactions</button>
-        </div>
-      </section>
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Savings (x6712)</h3>
-          <p className="account-amount">$10,928.42</p>
-          <p className="account-amount-description">Available Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button onClick={handleNavigateToTransactionPage} className="transaction-button">View transactions</button>
-        </div>
-      </section>
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-          <p className="account-amount">$184.30</p>
-          <p className="account-amount-description">Current Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button onClick={handleNavigateToTransactionPage} className="transaction-button">View transactions</button>
-        </div>
-      </section>
+      {listOfAccounts.map(account => <Account title={account.title} availableBalance={account.availableBalance.toLocaleString("en-US")} handleClick={handleNavigateToTransactionPage} key={account.title} ></Account>)}
     </div>
   );
 }

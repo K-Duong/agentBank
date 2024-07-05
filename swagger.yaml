@@ -1,0 +1,322 @@
+openapi: 3.1.0
+info:
+  description: Contains all available API endpoints in this codebase
+  version: 1.0.0
+  title: Bank Argent API documentation
+  termsOfService: http://swagger.io/terms/
+servers:
+  - url: http://localhost:3001/api/v1
+    description: developpement server
+security:
+  - Bearer: []
+tags:
+  - name: Transactions Module
+    description: Every request about transactions of user
+paths:
+  /accounts/transactions:
+    get:
+      tags:
+        - Transactions Module
+      summary: Get all user's transactions
+      description: API for fetching all user's transactions
+      operationId: getTransactions
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Return successfully user's accounts
+          $ref: '#/components/responses/SuccessRequestAccounts'
+        '404':
+          $ref: '#/components/responses/Notfound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /accounts/{accountId}/transactions/{transactionId}:
+    get:
+      tags:
+        - Transactions Module
+      summary: Get info for a specific transaction
+      description: API for fetching a specific transaction from its id
+      operationId: showTransactionById
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: accountId
+          description: The id of the selected account
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: transactionId
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected transaction
+          $ref: '#/components/responses/SuccessRequestTransaction'
+        '404':
+          $ref: '#/components/responses/Notfound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    patch:
+      tags:
+        - Transactions Module
+      summary: Update details of a specific transaction
+      description: API for updating the category or note of a specific transaction
+      operationId: updateTransactionById
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: accountId
+          description: The id of the selected account
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: transactionId
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: user to update a transaction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartialUpdatedTransaction'
+      responses:
+        '200':
+          description: Transaction updated successfully
+          $ref: '#/components/responses/SuccessRequestTransaction'
+        '404':
+          $ref: '#/components/responses/Notfound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    SuccessRequestTransaction:
+      description: Fetching API successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessFetchingTransaction'
+    SuccessRequestAccounts:
+      description: Fetching API successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SuccessFetchingAccounts'
+    Notfound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Account:
+      type: object
+      required:
+        - id
+        - type
+        - totalAmount
+        - currency
+        - listOfTransactions
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        totalAmount:
+          type: number
+        currency:
+          type: string
+        listOfTransactions:
+          $ref: '#/components/schemas/ListOfTransactions'
+    ListOfAccounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Account'
+      examples:
+        - id: 10
+          title: Argent Bank Checking (x8349)
+          totalAmount: 2082.79
+          currency: $
+          listOfTransactions:
+            - id: 1
+              type: deposit
+              amount: 10928.42
+              date: '2024-07-01'
+              transactionType: electronic
+              transactionDetails:
+                category: food
+                note: money for food of month
+        - id: 11
+          title: Argent Bank Savings (x6712)
+          totalAmount: 10928.42
+          currency: $
+          listOfTransactions:
+            - id: 2
+              type: deposit
+              amount: 10928.42
+              date: '2024-07-01'
+              transactionType: electronic
+              transactionDetails:
+                category: food
+                note: money for food of month
+            - id: 3
+              type: withdrawal
+              transactionDetails:
+                amount: 184.3
+                date: '2024-07-02'
+                category: insurance
+                note: ''
+    Transaction:
+      type: object
+      required:
+        - id
+        - type
+        - date
+        - description
+        - amount
+        - balance
+        - transactionType
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum:
+            - deposit
+            - withdrawal
+        date:
+          type: string
+          format: date
+        description:
+          type: string
+        amount:
+          type: number
+        balance:
+          type: number
+        transactionType:
+          type: string
+        transactionDetails:
+          type: object
+          properties:
+            category:
+              type:
+                - string
+                - 'null'
+              enum:
+                - food
+                - insurance, health
+                - transport
+                - leisure
+            note:
+              type:
+                - string
+                - 'null'
+              maxLength: 150
+      examples:
+        - id: 1
+          type: deposit
+          amount: 10928.42
+          date: '2024-07-01'
+          transactionType: electronic
+          transactionDetails:
+            category: food
+            note: money for food of month
+    ListOfTransactions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Transaction'
+      examples:
+        - id: 1
+          type: deposit
+          amount: 10928.42
+          date: '2024-07-01'
+          transactionType: electronic
+          balance: 13945.23
+          transactionDetails:
+            category: food
+            note: money for food of month
+        - id: 2
+          type: withdrawal
+          amount: 184.3
+          date: '2024-07-02'
+          transactionType: electronic
+          balance: 13760.93
+          transactionDetails:
+            category: insurance
+            note: ''
+    PartialUpdatedTransaction:
+      type: object
+      properties:
+        category:
+          type: string
+          enum:
+            - food
+            - insurance, health
+            - transport
+            - leisure
+        note:
+          type: string
+          maxLength: 150
+      examples:
+        - category: transport
+          note: train to Busan
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+    SuccessFetchingTransaction:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        body:
+          type: object
+          schema:
+            $ref: '#/components/schemas/Transaction'
+    SuccessFetchingAccounts:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        body:
+          type: object
+          schema:
+            $ref: '#/components/schemas/ListOfAccounts'

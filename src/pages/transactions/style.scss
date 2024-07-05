@@ -1,0 +1,61 @@
+@use "../../assets/styles/root/" as *;
+
+.transaction-wrapper {
+  @include flex-column;
+  align-items: center;
+  flex-grow: 1;
+  background-color: $bg-color;
+  
+  .transaction-header {
+    @include flex-column;
+    @include center-children;
+    background-color: $white-color;
+    width: 100%;
+    border-top: $bg-color 1px solid;
+    color: $text-color;
+    padding: 15px;
+    row-gap: 10px;
+
+    &-title {
+      font-size: 16px;
+      font-weight: $fw-300;
+    }
+    &-amount {
+      font-size: 36px;
+      font-weight: $fw-700;
+    }
+  }
+table {
+  border-collapse: collapse;
+}
+
+ .transactions-list {
+    @include flex-column;
+    margin: 35px ;
+    row-gap:$p-25 ;
+    width: 80%;
+    background-color: $white-color;
+    
+    
+    thead {
+      background-color: $bg-color;
+     .transactions-list-titles {
+      border-top: none;
+      text-align: left;
+      color:$white-color;
+      th {
+        padding-bottom: $p-25;
+      }
+    }
+    }
+    
+
+  }
+}
+
+.fa-chevron-down,
+.fa-pencil {
+cursor: pointer;
+}
+
+
