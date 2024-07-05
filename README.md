@@ -31,7 +31,7 @@ npm run dev:server
 npm run populate-db
 ```
 ### 2.Front-end
-1. Fork this repository: [AgentBank](https://github.com/K-Duong/agentBank)
+1. Fork this repository: [Argent Bank](https://github.com/K-Duong/argent-bank-react.git)
 2. Open a terminal window in the cloned project
 3. Run the following commands:
 ```bash
