@@ -1,0 +1,38 @@
+@use "../../assets/styles/root/" as *;
+
+td {
+  text-align: left;
+  padding-top: 10px;
+
+  
+}
+
+tr:not(.expanded-row) {
+    border-top: black 1px solid;
+}
+
+td,
+td div {
+  padding-bottom: 10px;
+ 
+}
+
+.btn-edit,
+.btn-open-transaction {
+  color: black; 
+  width: auto;
+  border: none;
+  background-color: transparent;
+  padding: 0 ;
+  margin: 0
+}
+
+.btn-open-transaction{
+ padding: 15px;
+
+}
+
+.transaction-category,
+.transaction-note {
+  @include flex-row;
+}

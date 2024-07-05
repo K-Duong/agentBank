@@ -1,10 +1,10 @@
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet,  createBrowserRouter } from "react-router-dom";
 import MainContainer from "../layouts/main-container";
 import HomePage from "../pages/home"
 
 import ErrorPage from "../pages/error"
 import ProfilePage from "../pages/profile";
-import TransactionPage from "../pages/transaction";
+import TransactionPage from "../pages/transactions";
 import LoginPage from "../pages/login";
 import NavBar from "../layouts/navbar"
 import Footer from "../layouts/footer";
