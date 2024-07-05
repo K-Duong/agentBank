@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthState } from "../../hooks/useAuthState";
 import { useUserState } from "../../hooks/useUserState";
 import FormEditName from "../../components/form-edit-profile";
 import Button from "../../components/button";
@@ -25,13 +24,7 @@ function ProfilePage() {
   ]
   const [activatedForm, setActivatedForm] = useState(false);
   const {isLoading, user} = useUserState();
-  const {isAuth} = useAuthState();
-
   const navigate = useNavigate();
-
-  useEffect(()=>{
-    if (!isAuth) navigate("/")
-  }, [isAuth]);
 
   const handleNavigateToTransactionPage = () => {
     navigate("/transactions")

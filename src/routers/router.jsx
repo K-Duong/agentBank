@@ -1,48 +1,55 @@
-import { Outlet,  createBrowserRouter } from "react-router-dom";
+import { Outlet, createBrowserRouter } from "react-router-dom";
 import MainContainer from "../layouts/main-container";
-import HomePage from "../pages/home"
+import HomePage from "../pages/home";
 
-import ErrorPage from "../pages/error"
+import ErrorPage from "../pages/error";
 import ProfilePage from "../pages/profile";
 import TransactionPage from "../pages/transactions";
 import LoginPage from "../pages/login";
-import NavBar from "../layouts/navbar"
+import NavBar from "../layouts/navbar";
 import Footer from "../layouts/footer";
+import ProtectorRoute from "../components/protectorRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: <ErrorPage/>,
-    children : [
+    errorElement: <ErrorPage />,
+    children: [
       {
-        path:"",
-        element: <HomePage/>
+        path: "",
+        element: <HomePage />,
       },
       {
-        path:"login",
-        element: <LoginPage/>
+        path: "login",
+        element: <LoginPage />,
       },
       {
-        path:"profile",
-        element: <ProfilePage/>
+        path: "",
+        element: <ProtectorRoute />,
+        children: [
+          {
+            path: "profile",
+            element: <ProfilePage />,
+          },
+          {
+            path: "transactions",
+            element: <TransactionPage />,
+          },
+        ],
       },
-      {
-        path:"transactions",
-        element: <TransactionPage/>
-      }
-    ]
+    ],
   },
 ]);
 
 function Root() {
   return (
     <>
-    <NavBar/>
-    <MainContainer>
-      <Outlet />
-    </MainContainer>
-    <Footer/> 
+      <NavBar />
+      <MainContainer>
+        <Outlet />
+      </MainContainer>
+      <Footer />
     </>
   );
 }

@@ -1,8 +1,4 @@
 import Transaction from "../../components/transaction";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { useAuthState } from "../../hooks/useAuthState";
 
 import "./style.scss";
 
@@ -90,11 +86,6 @@ function TransactionPage() {
       },
     },
   ];
-  const navigate = useNavigate();
-  const {isAuth} = useAuthState();
-  useEffect(()=>{
-    if (!isAuth) navigate("/")
-  }, [isAuth]);
 
   return (
     <div className="transaction-wrapper">
