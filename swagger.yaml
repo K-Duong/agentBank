@@ -144,19 +144,36 @@ components:
       type: object
       required:
         - id
+        - title
         - type
         - totalAmount
         - currency
         - listOfTransactions
       properties:
         id:
-          type: integer
+          type: string
+          examples:
+            - A10
         title:
           type: string
+          examples:
+            - Argent Bank Checking (x8349)
+        type:
+          type: string
+          enum:
+            - debit
+            - credit
+          examples:
+            - debit
         totalAmount:
           type: number
+          format: double
+          examples:
+            - 2082.79
         currency:
           type: string
+          examples:
+            - $
         listOfTransactions:
           $ref: '#/components/schemas/ListOfTransactions'
     ListOfAccounts:
@@ -164,39 +181,79 @@ components:
       items:
         $ref: '#/components/schemas/Account'
       examples:
-        - id: 10
+        - id: A10
+          type: debit
           title: Argent Bank Checking (x8349)
-          totalAmount: 2082.79
+          totalAmount: 11189.37
           currency: $
           listOfTransactions:
             - id: 1
-              type: deposit
-              amount: 10928.42
+              type: debit
               date: '2024-07-01'
+              description: Electrolux
+              amount: 10928.42
+              balance: 12117.79
               transactionType: electronic
-              transactionDetails:
-                category: food
-                note: money for food of month
-        - id: 11
-          title: Argent Bank Savings (x6712)
-          totalAmount: 10928.42
-          currency: $
-          listOfTransactions:
             - id: 2
-              type: deposit
-              amount: 10928.42
-              date: '2024-07-01'
+              type: credit
+              date: '2024-07-04'
+              description: Electrolux
+              amount: 928.42
+              balance: 11189.37
               transactionType: electronic
-              transactionDetails:
-                category: food
-                note: money for food of month
-            - id: 3
-              type: withdrawal
-              transactionDetails:
-                amount: 184.3
-                date: '2024-07-02'
-                category: insurance
-                note: ''
+    TransactionSummary:
+      type: object
+      required:
+        - id
+        - type
+        - date
+        - description
+        - amount
+        - balance
+        - transactionType
+      properties:
+        id:
+          type: integer
+          examples:
+            - 1
+        type:
+          type: string
+          enum:
+            - debit
+            - credit
+          examples:
+            - debit
+        date:
+          type: string
+          format: date
+          examples:
+            - '2024-07-01'
+        description:
+          type: string
+          examples:
+            - Grocery shopping
+        amount:
+          type: number
+          format: double
+          examples:
+            - '150.75'
+        balance:
+          type: number
+          format: double
+          examples:
+            - 12117.79
+        transactionType:
+          type: string
+          examples:
+            - electronic
+      examples:
+        - id: 1
+          type: debit
+          date: '2024-07-01'
+          description: Electrolux
+          amount: 10928.42
+          balance: 12117.79
+          transactionType: electronic
     Transaction:
       type: object
       required:
@@ -210,22 +267,38 @@ components:
       properties:
         id:
           type: integer
+          examples:
+            - 1
         type:
           type: string
           enum:
-            - deposit
-            - withdrawal
+            - debit
+            - credit
+          examples:
+            - debit
         date:
           type: string
           format: date
+          examples:
+            - '2024-07-01'
         description:
           type: string
+          examples:
+            - Grocery shopping
         amount:
           type: number
+          format: double
+          examples:
+            - '150.75'
         balance:
           type: number
+          format: double
+          examples:
+            - 12117.79
         transactionType:
           type: string
+          examples:
+            - electronic
         transactionDetails:
           type: object
           properties:
@@ -245,36 +318,33 @@ components:
               maxLength: 150
       examples:
         - id: 1
-          type: deposit
-          amount: 10928.42
+          type: debit
+          amount: 928.42
           date: '2024-07-01'
-          transactionType: electronic
+          description: Grocery shopping
+          transactionType: Carrefour
           transactionDetails:
             category: food
-            note: money for food of month
+            note: food of July month
     ListOfTransactions:
       type: array
       items:
-        $ref: '#/components/schemas/Transaction'
+        $ref: '#/components/schemas/TransactionSummary'
       examples:
         - id: 1
-          type: deposit
-          amount: 10928.42
+          type: debit
           date: '2024-07-01'
+          description: Electrolux
+          amount: 10928.42
+          balance: 12117.79
           transactionType: electronic
-          balance: 13945.23
-          transactionDetails:
-            category: food
-            note: money for food of month
         - id: 2
-          type: withdrawal
+          type: credit
           amount: 184.3
           date: '2024-07-02'
-          transactionType: electronic
+          description: EDF
           balance: 13760.93
-          transactionDetails:
-            category: insurance
-            note: ''
+          transactionType: electronic
     PartialUpdatedTransaction:
       type: object
       properties:
@@ -307,8 +377,7 @@ components:
           type: string
         body:
           type: object
-          schema:
-            $ref: '#/components/schemas/Transaction'
+          $ref: '#/components/schemas/Transaction'
     SuccessFetchingAccounts:
       type: object
       properties:
@@ -318,5 +387,4 @@ components:
           type: string
         body:
           type: object
-          schema:
-            $ref: '#/components/schemas/ListOfAccounts'
+          $ref: '#/components/schemas/ListOfAccounts'
