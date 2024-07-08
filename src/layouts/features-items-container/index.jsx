@@ -28,8 +28,6 @@ function FeaturesItemsContainer () {
       description:"We use top of the line encryption to make sure your data and money is always safe."
     },
 
-    
-
   ]
   return (
     <section className="features">

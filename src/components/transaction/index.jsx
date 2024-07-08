@@ -9,8 +9,7 @@ function Transaction({ transaction }) {
   const handleOpen = () => {
     setIsOpened(!isOpened);
   };
-  const handleEdit = () => {};
-  const handleType = (e) => {};
+
 
   return (
     <>
@@ -41,7 +40,6 @@ function Transaction({ transaction }) {
                   : ""}{" "}
                 <Button
                   type="button"
-                  handleClick={handleEdit}
                   className={"btn-edit"}
                 >
                   <FontAwesomeIcon icon="fa-solid fa-pencil" />
@@ -54,7 +52,6 @@ function Transaction({ transaction }) {
                   : ""}{" "}
                  <Button
                   type="button"
-                  handleClick={handleEdit}
                   className={"btn-edit"}
                 >
                   <FontAwesomeIcon icon="fa-solid fa-pencil" />

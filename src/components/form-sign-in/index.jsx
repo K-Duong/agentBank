@@ -68,8 +68,6 @@ function FormSignIn() {
 
   const handleChangePw = (e) => {
     const value = e.target.value;
-    //TODO: enlever la validation
-    // const passwordRegex = new RegExp(/^((?! )[\w&@#]+)$/);
     setPassword((prev) => {
       return {
         ...prev,

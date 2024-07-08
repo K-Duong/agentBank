@@ -23,9 +23,6 @@ export const authSlice = createSlice({
       state.isLoading= false;
       state.error = action.payload
     },
-    logingRemember : (state, action) => {
-      state.isRemember = action.payload;
-    },
     logingOut : (state) => {
       state.isLoading = false;
       state.isAuth = false;
@@ -34,4 +31,4 @@ export const authSlice = createSlice({
   }
 })
 
-export const { logingPending, logingSuccess, logingError, logingRemember, logingOut} = authSlice.actions;
+export const { logingPending, logingSuccess, logingError, logingOut} = authSlice.actions;
