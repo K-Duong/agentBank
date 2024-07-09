@@ -7,12 +7,115 @@ info:
 servers:
   - url: http://localhost:3001/api/v1
     description: developpement server
-security:
-  - Bearer: []
 tags:
+  - name: User Module
+    description: Operations related to user management
   - name: Transactions Module
     description: Every request about transactions of user
 paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/InvalidField'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Signup Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/InvalidField'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/InvalidField'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          $ref: '#/components/responses/InvalidField'
+        '500':
+          $ref: '#/components/responses/ServerError'
   /accounts/transactions:
     get:
       tags:
@@ -20,6 +123,8 @@ paths:
       summary: Get all user's transactions
       description: API for fetching all user's transactions
       operationId: getTransactions
+      security:
+        - Bearer: []
       parameters:
         - in: header
           name: Authorization
@@ -39,6 +144,8 @@ paths:
     get:
       tags:
         - Transactions Module
+      security:
+        - Bearer: []
       summary: Get info for a specific transaction
       description: API for fetching a specific transaction from its id
       operationId: showTransactionById
@@ -72,6 +179,8 @@ paths:
     patch:
       tags:
         - Transactions Module
+      security:
+        - Bearer: []
       summary: Update details of a specific transaction
       description: API for updating the category or note of a specific transaction
       operationId: updateTransactionById
@@ -95,6 +204,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         description: user to update a transaction
         content:
           application/json:
@@ -127,6 +237,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/SuccessFetchingAccounts'
+    InvalidField:
+      description: Invalid field
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     Notfound:
       description: The specified resource was not found
       content:
@@ -140,6 +256,56 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        body:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    UserProfile:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
     Account:
       type: object
       required:
@@ -361,13 +527,6 @@ components:
       examples:
         - category: transport
           note: train to Busan
-    Error:
-      type: object
-      properties:
-        status:
-          type: integer
-        message:
-          type: string
     SuccessFetchingTransaction:
       type: object
       properties:
@@ -388,3 +547,10 @@ components:
         body:
           type: object
           $ref: '#/components/schemas/ListOfAccounts'
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
