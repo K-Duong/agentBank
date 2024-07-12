@@ -4,8 +4,14 @@
   @include flex-column;
   align-items: center;
   background-color: $bg-color;
-  // row-gap: $p-35;
   flex-grow: 1;
+  .loading-text {
+    color: $white-color;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .header {
     @include flex-column;
     margin-bottom: 25px;
@@ -18,8 +24,7 @@
     .btn-edit-name {
       align-self: center;
       width: auto;
-      margin-top:0;
+      margin-top: 0;
     }
   }
-
 }
